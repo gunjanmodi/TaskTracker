@@ -30,4 +30,11 @@ public class TaskService {
         taskRepository.deleteTask(taskId);
     }
 
+    public void markTaskInProgress(int taskId) {
+        updateTask(taskId, null, "in-progress");
+    }
+
+    public void markTaskCompleted(int taskId) {
+        updateTask(taskId, null, "completed");
+    }
 }

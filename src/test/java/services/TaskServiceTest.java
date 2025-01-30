@@ -48,7 +48,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void updateTask()  {
+    public void testUpdateTask()  {
         taskService.addTask(10, "Task 10", "pending");
 
         taskService.updateTask(10, "Task 10 Update", "completed");
@@ -60,7 +60,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void deleteTask() {
+    public void testDeleteTask() {
         taskService.addTask(10, "Task 10", "completed");
         taskService.addTask(11, "Task 11", "pending");
 
@@ -69,6 +69,30 @@ public class TaskServiceTest {
         List<Task> tasks = taskService.listTasks();
         assertEquals(1, tasks.size());
         assertEquals(11, tasks.get(0).getId());
+    }
+
+    @Test
+    public void testMarkTaskInProgress() {
+        taskService.addTask(10, "Task 10", "pending");
+
+        taskService.markTaskInProgress(10);
+
+        List<Task> tasks = taskService.listTasks();
+        Task task = tasks.get(0);
+        assertEquals("in-progress", task.getStatus());
+        assertEquals("Task 10", task.getDescription());
+    }
+
+    @Test
+    public void testMarkTaskCompleted() {
+        taskService.addTask(10, "Task 10", "in-progress");
+
+        taskService.markTaskCompleted(10);
+
+        List<Task> tasks = taskService.listTasks();
+        Task task = tasks.get(0);
+        assertEquals("completed", task.getStatus());
+        assertEquals("Task 10", task.getDescription());
     }
 
 }

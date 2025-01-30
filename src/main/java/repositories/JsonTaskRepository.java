@@ -28,8 +28,8 @@ public class JsonTaskRepository implements TaskRepositoryInterface {
         boolean taskFound = false;
         for(Task task: tasks) {
             if(task.getId() == taskId) {
-                task.setDescription(newDescription);
-                task.setStatus(newStatus);
+                if(newDescription != null) task.setDescription(newDescription);
+                if(newStatus != null) task.setStatus(newStatus);
                 taskFound = true;
                 break;
             }
