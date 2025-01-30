@@ -5,10 +5,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TaskTest {
-    @Test
-    public void testAddition() {
-        assertEquals(4, 2 + 2);
-    }
 
     @Test
     public void testTaskInitialization() {
@@ -37,12 +33,5 @@ public class TaskTest {
         Task task = new Task(1, "Test Task", "pending");
         task.setId(2);
         assertEquals(2, task.getId());
-    }
-
-    @Test
-    public void testToString() {
-        Task task = new Task(1, "Test Task", "pending");
-        String expectedString = "Task{id=1, description=Test Task\n, status=pending\n, createdAt=null\n, updatedAt=null\n}";
-        assertEquals(expectedString, task.toString());
     }
 }

@@ -7,12 +7,13 @@ import models.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JsonUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public void writeTasksToJsonFile(String filePath, List<Task> tasks) {
+    public static void writeTasksToJsonFile(String filePath, List<Task> tasks) {
         File file = createJsonFileIfNotExists(filePath);
         try {
             objectMapper.writeValue(file, tasks);
@@ -21,16 +22,20 @@ public class JsonUtils {
         }
     }
 
-    public List<Task> readTasksFromJsonFile(String filePath) {
+    public static List<Task> readTasksFromJsonFile(String filePath) {
+        File file = createJsonFileIfNotExists(filePath);
+        if (file.length() == 0) {
+            return new ArrayList<>();
+        }
         try {
-            return objectMapper.readValue(new File(filePath), new TypeReference<List<Task>>() {});
+            return objectMapper.readValue(file, new TypeReference<List<Task>>() {});
         } catch(IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private File createJsonFileIfNotExists(String filePath) {
+    private static File createJsonFileIfNotExists(String filePath) {
         File file = new File(filePath);
         if(!file.exists()) {
             try {
@@ -42,6 +47,5 @@ public class JsonUtils {
             }
         }
         return file;
-
     }
 }

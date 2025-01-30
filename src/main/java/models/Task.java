@@ -17,6 +17,8 @@ public class Task {
         this.id = id;
         this.description = description;
         this.status = status;
+        this.createdAt = getCurrentDateTime();
+        this.updatedAt = this.createdAt;
     }
 
     public int getId() {
@@ -66,10 +68,10 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", description" + description + "\n" +
-                ", status" + status + "\n" +
-                ", createdAt" + createdAt + "\n" +
-                ", updatedAt" + updatedAt + "\n" +
+                ", description=" + description + "\n" +
+                ", status=" + status + "\n" +
+                ", createdAt=" + createdAt + "\n" +
+                ", updatedAt=" + updatedAt + "\n" +
                 "}";
     }
 }
