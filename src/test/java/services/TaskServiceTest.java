@@ -1,5 +1,7 @@
 package services;
 
+import boundaries.TaskRepositoryInterface;
+import factories.TaskFactory;
 import models.Task;
 import models.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
@@ -20,8 +22,9 @@ public class TaskServiceTest {
 
     @BeforeEach
     public void setUp() {
-        JsonTaskRepository jsonTaskRepository = new JsonTaskRepository(TEST_FILE_PATH);
-        taskService = new TaskService(jsonTaskRepository);
+        TaskRepositoryInterface jsonTaskRepository = new JsonTaskRepository(TEST_FILE_PATH);
+        TaskFactory taskFactory = new TaskFactory(jsonTaskRepository);
+        taskService = new TaskService(jsonTaskRepository, taskFactory);
     }
 
     @AfterEach
@@ -34,101 +37,98 @@ public class TaskServiceTest {
 
     @Test
     public void testAddTask()    {
-        taskService.addTask(10, "Task 10", TaskStatus.COMPLETED);
+        taskService.addTask("Task 10", TaskStatus.COMPLETED);
         Task task = taskService.listTasks().get(0);
-        assertEquals(10, task.getId());
         assertEquals("Task 10", task.getDescription());
         assertEquals(TaskStatus.COMPLETED, task.getStatus());
     }
 
     @Test
     public void testListAllTasks() {
-        taskService.addTask(10, "Task 10", TaskStatus.COMPLETED);
-        taskService.addTask(11, "Task 11", TaskStatus.PENDING);
+        taskService.addTask("Task 10", TaskStatus.COMPLETED);
+        taskService.addTask("Task 11", TaskStatus.PENDING);
         assertEquals(2, taskService.listTasks().size());
     }
 
     @Test
     public void testUpdateTask()  {
-        taskService.addTask(10, "Task 10", TaskStatus.PENDING);
+        taskService.addTask("Task 10", TaskStatus.PENDING);
 
-        taskService.updateTask(10, "Task 10 Update", TaskStatus.COMPLETED);
+        Task task = taskService.listTasks().get(0);
+        taskService.updateTask(task.getId(), "Task 10 Update", TaskStatus.COMPLETED);
 
-        List<Task> tasks = taskService.listTasks();
-        Task task = tasks.get(0);
-        assertEquals("Task 10 Update", task.getDescription());
-        assertEquals(TaskStatus.COMPLETED, task.getStatus());
+        Task updatedTask = taskService.listTasks().get(0);
+        assertEquals("Task 10 Update", updatedTask.getDescription());
+        assertEquals(TaskStatus.COMPLETED, updatedTask.getStatus());
     }
 
     @Test
     public void testDeleteTask() {
-        taskService.addTask(10, "Task 10", TaskStatus.COMPLETED);
-        taskService.addTask(11, "Task 11", TaskStatus.PENDING);
+        taskService.addTask("Task 10", TaskStatus.COMPLETED);
+        taskService.addTask("Task 11", TaskStatus.PENDING);
 
-        taskService.deleteTask(10);
+        Task task = taskService.listTasks().get(0);
+        taskService.deleteTask(task.getId());
 
         List<Task> tasks = taskService.listTasks();
         assertEquals(1, tasks.size());
-        assertEquals(11, tasks.get(0).getId());
     }
 
     @Test
     public void testMarkTaskInProgress() {
-        taskService.addTask(10, "Task 10", TaskStatus.PENDING);
+        taskService.addTask("Task 10", TaskStatus.PENDING);
 
-        taskService.markTaskInProgress(10);
+        Task task = taskService.listTasks().get(0);
+        taskService.markTaskInProgress(task.getId());
 
         List<Task> tasks = taskService.listTasks();
-        Task task = tasks.get(0);
-        assertEquals(TaskStatus.IN_PROGRESS, task.getStatus());
-        assertEquals("Task 10", task.getDescription());
+        Task updatedTask = taskService.listTasks().get(0);
+        assertEquals(TaskStatus.IN_PROGRESS, updatedTask.getStatus());
+        assertEquals("Task 10", updatedTask.getDescription());
         assertNotNull(task.getUpdatedAt());
     }
 
     @Test
     public void testMarkTaskCompleted() {
-        taskService.addTask(10, "Task 10", TaskStatus.IN_PROGRESS);
+        taskService.addTask("Task 10", TaskStatus.IN_PROGRESS);
+        Task task = taskService.listTasks().get(0);
+        taskService.markTaskCompleted(task.getId());
 
-        taskService.markTaskCompleted(10);
+        Task updatedTask = taskService.listTasks().get(0);
 
-        List<Task> tasks = taskService.listTasks();
-        Task task = tasks.get(0);
-        assertEquals(TaskStatus.COMPLETED, task.getStatus());
-        assertEquals("Task 10", task.getDescription());
+        assertEquals(TaskStatus.COMPLETED, updatedTask.getStatus());
+        assertEquals("Task 10", updatedTask.getDescription());
         assertNotNull(task.getUpdatedAt());
     }
 
     @Test
     public void testListPendingTasks() {
-        taskService.addTask(10, "Task 10", TaskStatus.PENDING);
-        taskService.addTask(11, "Task 11", TaskStatus.IN_PROGRESS);
+        taskService.addTask("Task 10", TaskStatus.PENDING);
+        taskService.addTask("Task 11", TaskStatus.IN_PROGRESS);
 
         List<Task> completedTasks = taskService.listPendingTasks();
 
         assertEquals(1, completedTasks.size());
-        assertEquals(10, completedTasks.get(0).getId());
     }
 
     @Test
     public void testListInProgressTasks() {
-        taskService.addTask(10, "Task 10", TaskStatus.IN_PROGRESS);
-        taskService.addTask(11, "Task 11", TaskStatus.PENDING);
+        taskService.addTask("Task 10", TaskStatus.IN_PROGRESS);
+        taskService.addTask("Task 11", TaskStatus.PENDING);
 
         List<Task> completedTasks = taskService.listInProgressTasks();
 
         assertEquals(1, completedTasks.size());
-        assertEquals(10, completedTasks.get(0).getId());
     }
 
     @Test
     public void testListCompletedTasks() {
-        taskService.addTask(10, "Task 10", TaskStatus.COMPLETED);
-        taskService.addTask(11, "Task 11", TaskStatus.PENDING);
+        taskService.addTask("Task 10", TaskStatus.COMPLETED);
+        taskService.addTask("Task 11", TaskStatus.PENDING);
 
         List<Task> completedTasks = taskService.listCompletedTasks();
 
         assertEquals(1, completedTasks.size());
-        assertEquals(10, completedTasks.get(0).getId());
     }
 
 }
