@@ -6,14 +6,14 @@ import java.time.format.DateTimeFormatter;
 public class Task {
     private int id;
     private String description;
-    private String status;
+    private TaskStatus status;
     private String createdAt;
     private String updatedAt;
 
     public Task() {
     }
 
-    public Task(int id, String description, String status) {
+    public Task(int id, String description, TaskStatus status) {
         this.id = id;
         this.description = description;
         this.status = status;
@@ -29,7 +29,7 @@ public class Task {
         return description;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
@@ -60,7 +60,7 @@ public class Task {
         return currentDateTime.format(formatter);
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
         updateTimeStamp();
     }

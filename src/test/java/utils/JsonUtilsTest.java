@@ -1,5 +1,6 @@
 package utils;
 
+import models.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,8 +19,8 @@ public class JsonUtilsTest {
     @BeforeEach
     public void setUp() {
         tasks = new ArrayList<>();
-        tasks.add(new Task(1, "Task 1", "pending"));
-        tasks.add(new Task(2, "Task 2", "completed"));
+        tasks.add(new Task(1, "Task 1", TaskStatus.PENDING));
+        tasks.add(new Task(2, "Task 2", TaskStatus.COMPLETED));
     }
 
     @AfterEach

@@ -2,6 +2,7 @@ package repositories;
 
 import boundaries.TaskRepositoryInterface;
 import models.Task;
+import models.TaskStatus;
 import utils.JsonUtils;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class JsonTaskRepository implements TaskRepositoryInterface {
     }
 
     @Override
-    public void updateTask(int taskId, String newDescription, String newStatus) {
+    public void updateTask(int taskId, String newDescription, TaskStatus newStatus) {
         List<Task> tasks = getAllTasks();
         boolean taskFound = false;
         for(Task task: tasks) {

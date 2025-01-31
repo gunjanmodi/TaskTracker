@@ -2,6 +2,7 @@ package services;
 
 import boundaries.TaskRepositoryInterface;
 import models.Task;
+import models.TaskStatus;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public void addTask(int id, String description, String status) {
+    public void addTask(int id, String description, TaskStatus status) {
         List<Task> tasks = taskRepository.getAllTasks();
         tasks.add(new Task(id, description, status));
         taskRepository.addTasks(tasks);
@@ -22,7 +23,7 @@ public class TaskService {
         return taskRepository.getAllTasks();
     }
 
-    public void updateTask(int taskId, String newDescription, String newStatus) {
+    public void updateTask(int taskId, String newDescription, TaskStatus newStatus) {
         taskRepository.updateTask(taskId, newDescription, newStatus);
     }
 
@@ -31,28 +32,28 @@ public class TaskService {
     }
 
     public void markTaskInProgress(int taskId) {
-        updateTask(taskId, null, "in-progress");
+        updateTask(taskId, null, TaskStatus.IN_PROGRESS);
     }
 
     public void markTaskCompleted(int taskId) {
-        updateTask(taskId, null, "completed");
+        updateTask(taskId, null, TaskStatus.COMPLETED);
     }
 
     public List<Task> listPendingTasks() {
         List<Task> tasks = taskRepository.getAllTasks();
-        tasks.removeIf(task -> !task.getStatus().equals("pending"));
+        tasks.removeIf(task -> !task.getStatus().equals(TaskStatus.PENDING));
         return tasks;
     }
 
     public List<Task> listInProgressTasks() {
         List<Task> tasks = taskRepository.getAllTasks();
-        tasks.removeIf(task -> !task.getStatus().equals("in-progress"));
+        tasks.removeIf(task -> !task.getStatus().equals(TaskStatus.IN_PROGRESS));
         return tasks;
     }
 
     public List<Task> listCompletedTasks() {
         List<Task> tasks = taskRepository.getAllTasks();
-        tasks.removeIf(task -> !task.getStatus().equals("completed"));
+        tasks.removeIf(task -> !task.getStatus().equals(TaskStatus.COMPLETED));
         return tasks;
     }
 }
