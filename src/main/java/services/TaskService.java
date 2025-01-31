@@ -37,4 +37,22 @@ public class TaskService {
     public void markTaskCompleted(int taskId) {
         updateTask(taskId, null, "completed");
     }
+
+    public List<Task> listPendingTasks() {
+        List<Task> tasks = taskRepository.getAllTasks();
+        tasks.removeIf(task -> !task.getStatus().equals("pending"));
+        return tasks;
+    }
+
+    public List<Task> listInProgressTasks() {
+        List<Task> tasks = taskRepository.getAllTasks();
+        tasks.removeIf(task -> !task.getStatus().equals("in-progress"));
+        return tasks;
+    }
+
+    public List<Task> listCompletedTasks() {
+        List<Task> tasks = taskRepository.getAllTasks();
+        tasks.removeIf(task -> !task.getStatus().equals("completed"));
+        return tasks;
+    }
 }
