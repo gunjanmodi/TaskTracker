@@ -78,7 +78,7 @@ public class Main {
                 tasks = taskService.listTasks();
             } else if(filter.equals("pending")) {
                 tasks = taskService.listPendingTasks();
-            } else if(filter.equals("in-progress")) {
+            } else if(filter.equals("in_progress")) {
                 tasks = taskService.listInProgressTasks();
             } else if(filter.equals("completed")) {
                 tasks = taskService.listCompletedTasks();
@@ -170,6 +170,4 @@ public class Main {
             }
         }
     }
-
-
 }
