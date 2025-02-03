@@ -11,6 +11,8 @@ TaskTracker is a simple command-line application for managing tasks. It allows y
 - Mark a task as in_progress or completed
 - List tasks by their status (all, pending, in_progress, completed)
 
+The features are inspired from here: [TaskTracker Plan](https://roadmap.sh/projects/task-tracker)
+
 ## Requirements
 
 - Java 11 or higher
