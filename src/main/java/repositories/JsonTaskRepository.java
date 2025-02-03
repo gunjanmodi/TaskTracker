@@ -45,7 +45,18 @@ public class JsonTaskRepository implements TaskRepositoryInterface {
     @Override
     public void deleteTask(int taskId) {
         List<Task> tasks = getAllTasks();
-        tasks.removeIf(task -> task.getId() == taskId);
+        boolean taskFound = false;
+        for(Task task: tasks) {
+            if(task.getId() == taskId) {
+                tasks.remove(task);
+                taskFound = true;
+                break;
+            }
+        }
+
+        if(!taskFound) {
+            throw new IllegalArgumentException("Task not found");
+        }
         JsonUtils.writeTasksToJsonFile(filePath, tasks);
     }
 
